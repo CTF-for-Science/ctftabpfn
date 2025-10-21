@@ -1,0 +1,5 @@
+dataset:
+  name: Lorenz_Official
+  pair_id: '1-9'  # Run on sub-datasets 1 through 6
+model:
+  name: tabpfn
