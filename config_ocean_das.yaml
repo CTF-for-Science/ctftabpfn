@@ -1,0 +1,5 @@
+dataset:
+  name: ocean_das
+  pair_id: '1-9'  # Run on sub-datasets 1 through 6
+model:
+  name: tabpfn

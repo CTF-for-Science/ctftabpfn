@@ -63,6 +63,10 @@ def main(config_path: str) -> None:
             os.system('python lorenz_submit.py --pair_id ' + str(pair_id))
         elif dataset_name == 'KS_Official':
             os.system('python ks_submit.py --pair_id ' + str(pair_id))
+        elif dataset_name == 'ocean_das':
+            os.system('python ocean_das_submit.py --pair_id ' + str(pair_id))
+        elif dataset_name == 'seismo':
+            os.system('python seismo_submit.py --pair_id ' + str(pair_id))
         else:
             pass
 
@@ -70,6 +74,10 @@ def main(config_path: str) -> None:
             pred_data = np.load('pairid' + str(pair_id) + 'lorenz.npz')['data_mat'].T
         elif dataset_name == 'KS_Official':
             pred_data = np.load('pairid' + str(pair_id) + 'ks.npz')['data_mat'].T
+        elif dataset_name == 'ocean_das':
+            pred_data = np.load('pairid' + str(pair_id) + 'ocean_das.npz')['data_mat'].T
+        elif dataset_name == 'seismo':
+            pred_data = np.load('pairid' + str(pair_id) + 'seismo.npz')['data_mat'].T
         else: 
             pass
 
