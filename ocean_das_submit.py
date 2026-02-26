@@ -71,10 +71,7 @@ from tabpfn_time_series import TimeSeriesDataFrame
 # For ocean_das: pairs 2 and 4 are reconstruction tasks
 if pair_id not in [2, 4]:
     arr = np.vstack([arr, np.zeros((1000, spatial_dim))])
-else:
-    # For reconstruction tasks, load the full training data
-    data = np.load('data/ocean_das/train/' + load_string + '.npz')
-    arr = data['data_mat'] if 'data_mat' in data else data[list(data.keys())[0]]
+
 timesteps, n_items = arr.shape
 
 # Generate timestamps (e.g., daily starting from 2019-01-01)

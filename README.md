@@ -3,13 +3,22 @@
 This submodule contains code to evaluate the foundation model TabPFNv2 (https://github.com/PriorLabs/tabpfn-time-series) on ct4science benchmarks. config_KS.yaml is a configuration file to run on all KS_Official tasks and config_Lorenz is the same for Lorenz_Official. 
 
 ## Usage
-First, ensure that `ctf4science` is already installed. Then, from the root directory of `ctftabpfn`, 
+To better manage dependencies, we STRONGLY recommend following installation steps.
+1. Create a new environment with `venv` or `conda`.
+2. Pip install `uv`:
 ```bash
-pip install -r requirements.txt
+pip install uv
 ```
-will install the remaining dependencies. 
+3. Install the requirements for tabpfn from the root of ctftabpfn, not the root of ctf4science.
+```bash
+uv pip install -r requirements.txt 
+```
+4. Install ctf4science. Make sure you are now in the root of ctf4science.
+```bash
+uv pip install -e .
+```
 
-Given a config file, one can train and evaluate a model by running
+Now, given a config file, one can train and evaluate a model by running
 ```bash
 python run.py <path-to-config>
 ```

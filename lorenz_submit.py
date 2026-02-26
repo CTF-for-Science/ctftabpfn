@@ -6,9 +6,12 @@ parser = argparse.ArgumentParser(
                     prog='submitlorenz',
                     )
 
+
 parser.add_argument('--pair_id', type=int)
+parser.add_argument('--run_num', type=int)
 args = parser.parse_args()
 pair_id = args.pair_id
+run_num = args.run_num
 
 prediction_length = 1000
 
@@ -34,11 +37,11 @@ elif pair_id == 7:
     load_string = 'X5train'
 elif pair_id == 8:
     _, arr = ctf4science.data_module.load_dataset('Lorenz_Official', pair_id, transpose=False)
-    arr = arr[0]
+    arr = arr
     load_string = 'X9train'
 elif pair_id == 9:
     _, arr = ctf4science.data_module.load_dataset('Lorenz_Official', pair_id, transpose=False)
-    arr = arr[0]
+    arr = arr
     load_string = 'X10train'
 else:
     raise ValueError('Incorrect pair_id')
@@ -79,8 +82,6 @@ df = pd.DataFrame({"target": flattened}, index=multi_index)
 
 # Create TimeSeriesDataFrame
 tsdf = TimeSeriesDataFrame(df)
-
-print(tsdf.head())
 
 
 tsdf = tsdf[
@@ -123,10 +124,9 @@ if pair_id not in [2,4]:
     pred = predictor.predict(train_tsdf, test_tsdf)
 
 else:
-    print('2 or 4')
     pred = predictor.predict(train_tsdf, train_tsdf)
 x_np = pred['target'][0].to_numpy()
 y_np = pred['target'][1].to_numpy()
 z_np = pred['target'][2].to_numpy()
 pred_arr = np.vstack([x_np, y_np, z_np]).T
-np.savez('pairid' + str(pair_id) + 'lorenz.npz', data_mat = pred_arr)
+np.savez('pairid' + str(pair_id) + 'lorenz' + str(run_num) + '.npz', data_mat = pred_arr)

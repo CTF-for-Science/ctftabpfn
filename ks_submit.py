@@ -1,12 +1,16 @@
 import argparse
 import ctf4science
+import ctf4science.data_module
 parser = argparse.ArgumentParser(
                     prog='submitks',
                     )
 
+
 parser.add_argument('--pair_id', type=int)
+parser.add_argument('--run_num', type=int)
 args = parser.parse_args()
 pair_id = args.pair_id
+run_num = args.run_num
 
 prediction_length = 1000
 
@@ -32,11 +36,11 @@ elif pair_id == 7:
     load_string = 'X5train'
 elif pair_id == 8:
     _, arr = ctf4science.data_module.load_dataset('KS_Official', pair_id, transpose=False)
-    arr = arr[0]
+    arr = arr
     load_string = 'X9train'
 elif pair_id == 9:
     _, arr = ctf4science.data_module.load_dataset('KS_Official', pair_id, transpose=False)
-    arr = arr[0]
+    arr = arr
     load_string = 'X10train'
 else:
     raise ValueError('Incorrect pair_id')
@@ -57,8 +61,7 @@ from scipy.io import loadmat
 # arr = loadmat('data/KS_Official/train/' + load_string + '.mat')[load_string][-500:]
 if pair_id not in [2,4]:
     arr = np.vstack([arr, np.zeros((1000, 1024))])
-else:
-    arr = loadmat('data/KS_Official/train/' + load_string + '.mat')[load_string]
+    
 timesteps, n_items = arr.shape
 
 # Generate timestamps (e.g., daily starting from 2019-01-01)
@@ -79,8 +82,6 @@ df = pd.DataFrame({"target": flattened}, index=multi_index)
 
 # Create TimeSeriesDataFrame
 tsdf = TimeSeriesDataFrame(df)
-
-print(tsdf.head())
 
 
 tsdf = tsdf[
@@ -123,11 +124,10 @@ if pair_id not in [2,4]:
     pred = predictor.predict(train_tsdf, test_tsdf)
 
 else:
-    print('2 or 4')
     pred = predictor.predict(train_tsdf, train_tsdf)
 temp_list = []
 for i in range(1024):
     temp_list.append(pred['target'][i].to_numpy())
 
 pred_arr = np.array(temp_list).T
-np.savez('pairid' + str(pair_id) + 'ks.npz', data_mat = pred_arr)
+np.savez('pairid' + str(pair_id) + 'ks' + str(run_num) + '.npz', data_mat = pred_arr)
